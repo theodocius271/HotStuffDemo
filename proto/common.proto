@@ -1,0 +1,30 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "/home/test/Desktop/HotStuffDemo/proto";
+
+message Block {
+  bytes ParentHash = 1;
+  bytes Hash = 2;
+  uint64 height = 3;
+  repeated string commands = 4;
+  bool committed = 6;
+}
+
+enum MsgType {
+  PREPARE = 0;
+  PREPARE_VOTE = 1;
+  PRECOMMIT = 2;
+  PRECOMMIT_VOTE = 3;
+  COMMIT = 4;
+  COMMIT_VOTE = 5;
+  NEWVIEW = 6;
+  DECIDE = 7;
+}
+
+message QuorumCert {
+  bytes BlockHash = 1;
+  MsgType type = 2;
+  uint64 viewNum = 3;
+  bytes signature = 4;
+}
