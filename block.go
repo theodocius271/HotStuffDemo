@@ -1,4 +1,4 @@
-package hotstuffdemo
+package HotStuffDemo
 
 import (
 	"crypto/sha256"
@@ -8,7 +8,7 @@ import (
 	"fmt"
 
 	"github.com/syndtr/goleveldb/leveldb"
-	pb "github.com/wjbbig/go-hotstuff/proto"
+	pb "github.com/theodocius271/HotStuffDemo/proto"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -18,12 +18,9 @@ import (
 type BlockStorage interface {
 	Put(block *pb.Block) error
 	Get(hash []byte) (*pb.Block, error)
-	UpdateState(block *pb.Block) error
-	BlockOf(cert *pb.QuorumCert) (*pb.Block, error)
-	ParentOf(block *pb.Block) (*pb.Block, error)
 	GetLastBlockHash() []byte
-	RestoreStatus()
 	Close()
+	// String(block *pb.Block) string
 }
 
 func Hash(block *pb.Block) []byte {
@@ -43,8 +40,6 @@ func Hash(block *pb.Block) []byte {
 		hasher.Write([]byte(command))
 	}
 
-	qcByte, _ := proto.Marshal(block.Justify)
-	hasher.Write(qcByte)
 	blockHash := hasher.Sum(nil)
 	return blockHash
 }
